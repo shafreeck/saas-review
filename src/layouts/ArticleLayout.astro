@@ -23,7 +23,7 @@ const {
 
 const slug = article.id.replace(/\.mdx$/, '');
 const path = `/articles/${slug}/`;
-const site = Astro.site ?? new URL('https://toolverdict.dev/');
+const site = Astro.site ?? new URL('https://toolverdict.site/');
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });

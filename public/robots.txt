@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # NOTE: update this domain once the real one is purchased
-Sitemap: https://toolverdict.dev/sitemap-index.xml
+Sitemap: https://toolverdict.site/sitemap-index.xml

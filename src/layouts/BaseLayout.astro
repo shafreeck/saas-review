@@ -26,7 +26,7 @@ const {
   noindex = false,
 } = Astro.props;
 
-const site = Astro.site ?? new URL('https://toolverdict.dev/');
+const site = Astro.site ?? new URL('https://toolverdict.site/');
 const canonical = new URL(path, site);
 const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT;
 ---
