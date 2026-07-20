@@ -1,0 +1,89 @@
+---
+interface Props {
+  slot?: string;
+  format?: 'leaderboard' | 'rectangle' | 'in-article';
+  label?: string;
+}
+
+const { slot, format = 'leaderboard', label = 'Advertisement' } = Astro.props;
+const client = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+const heights: Record<string, string> = {
+  leaderboard: '110px',
+  rectangle: '280px',
+  'in-article': '140px',
+};
+---
+
+<div class="ad-slot">
+  <span class="ad-label">{label}</span>
+  {
+    client ? (
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client={client}
+        data-ad-slot={slot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+    ) : (
+      <div class="ad-placeholder" style={`min-height: ${heights[format] ?? '110px'}`}>
+        <span class="ad-mono">AD SLOT · {format.toUpperCase()}</span>
+        <span class="ad-hint">
+          Set <code>PUBLIC_ADSENSE_CLIENT</code> to activate this placement
+        </span>
+      </div>
+    )
+  }
+</div>
+{
+  client && (
+    <script is:inline>
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        /* noop */
+      }
+    </script>
+  )
+}
+
+<style>
+  .ad-slot {
+    margin: 2.75rem 0;
+  }
+  .ad-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.4rem;
+  }
+  .ad-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    border: 2px dashed var(--ink-soft);
+    background: var(--paper-2);
+  }
+  .ad-mono {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+  }
+  .ad-hint {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+  .ad-hint code {
+    font-family: var(--font-mono);
+    background: var(--card);
+    border: 1px solid var(--ink-soft);
+    padding: 0.05em 0.35em;
+  }
+</style>

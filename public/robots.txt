@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# NOTE: update this domain once the real one is purchased
+Sitemap: https://toolverdict.dev/sitemap-index.xml

@@ -1,0 +1,135 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  featured?: boolean;
+}
+
+const { article, featured = false } = Astro.props;
+const { title, description, category, pubDate, verdict } = article.data;
+const slug = article.id.replace(/\.mdx$/, '');
+const href = `/articles/${slug}/`;
+const dateStr = pubDate.toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+---
+
+<a class="acard" class:list={[{ featured }]} href={href} data-reveal>
+  <div class="acard-top">
+    <span class="acard-cat">{category}</span>
+    <span class="acard-score" title={`Verdict score: ${verdict.score}/10`}>
+      {verdict.score.toFixed(1)}<small>/10</small>
+    </span>
+  </div>
+  <h3 class="acard-title">{title}</h3>
+  <p class="acard-desc">{description}</p>
+  <div class="acard-foot">
+    <span class="acard-winner">★ {verdict.winner}</span>
+    <time datetime={pubDate.toISOString()}>{dateStr}</time>
+  </div>
+  <span class="acard-cta">
+    Read the verdict <span class="arrow" aria-hidden="true">→</span>
+  </span>
+</a>
+
+<style>
+  .acard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.3rem 1.3rem 1.1rem;
+    background: var(--card);
+    border: var(--border);
+    box-shadow: var(--shadow-hard);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+  }
+  .acard:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-lift);
+  }
+  .acard-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .acard-cat {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green-deep);
+    border: 1.5px solid var(--green-deep);
+    padding: 0.18rem 0.5rem;
+  }
+  .acard-score {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1.05rem;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.15rem 0.5rem;
+  }
+  .acard-score small {
+    font-size: 0.65rem;
+    opacity: 0.7;
+    margin-left: 1px;
+  }
+  .acard-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .featured .acard-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+  }
+  .acard-desc {
+    color: var(--ink-soft);
+    font-size: 0.93rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .acard-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1.5px solid rgba(26, 31, 29, 0.2);
+    font-size: 0.82rem;
+  }
+  .acard-winner {
+    font-weight: 600;
+    color: var(--green-deep);
+  }
+  .acard-foot time {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+  }
+  .acard-cta {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .arrow {
+    display: inline-block;
+    transition: transform 0.18s ease;
+  }
+  .acard:hover .arrow {
+    transform: translateX(5px);
+  }
+</style>

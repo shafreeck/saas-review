@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+---
+
+<BaseLayout
+  title="How we review · ToolVerdict"
+  description="ToolVerdict's review methodology: how we buy, test, score, and publish verdicts on SaaS and AI tools — and what we will never do."
+  path="/about/"
+>
+  <section class="container about">
+    <span class="mono-tag">About</span>
+    <h1 class="about-title">We review tools the way you'd want someone to review yours.</h1>
+    <p class="about-lede">
+      ToolVerdict exists because most "reviews" are press releases with affiliate links. Ours are
+      test reports.
+    </p>
+
+    <div class="prose">
+      <h2>What we actually do</h2>
+      <p>
+        Every tool we cover is purchased with our own money, at the plan tier a real buyer would
+        choose. We then run it through a fixed brief — the same tasks, documents, and deadlines we
+        give every competitor in the same comparison. Vendor demo accounts and guided tours don't
+        count as testing.
+      </p>
+      <p>
+        Scores are decided before publication and are not negotiable afterward. When a tool
+        changes — a price hike, a new feature, a regression — the article gets a dated update, not
+        a silent rewrite.
+      </p>
+
+      <h2>How scoring works</h2>
+      <p>
+        Every verdict uses the same four weighted criteria: <strong>output quality</strong> (does
+        it actually do the job?), <strong>speed and friction</strong> (how fast from signup to
+        useful result?), <strong>pricing honesty</strong> (are the advertised prices the real
+        prices?), and <strong>learning curve</strong> (can a normal human run it without a
+        certification?).
+      </p>
+
+      <ComparisonTable
+        cols={['Score band', 'What it means', 'Typical example']}
+        rows={[
+          ['9.0 – 10', 'Exceptional. Buy it now; the flaws are footnotes.', 'Category leader with honest pricing'],
+          ['7.5 – 8.9', 'Strong. Right choice for most buyers, with known caveats.', 'Great core, weak mobile app'],
+          ['6.0 – 7.4', 'Situational. Good for a specific use case, not a general one.', 'Powerful but hostile onboarding'],
+          ['Below 6.0', 'Not recommended at current price. We publish these too.', 'Oversold features, surprise fees'],
+        ]}
+        caption="The ToolVerdict score bands"
+      />
+
+      <h2>What we will never do</h2>
+      <ul>
+        <li>Accept payment for placement, score, or removal of a negative verdict.</li>
+        <li>Review a tool using only a vendor-provided sandbox or guided demo.</li>
+        <li>Publish a comparison where the comparison table was written by one of the vendors.</li>
+        <li>Hide affiliate relationships — they are disclosed in the footer and in each article.</li>
+      </ul>
+
+      <h2>Corrections</h2>
+      <p>
+        Got a price change, a dead feature, or a factual error? Send it to us via the <a
+          href="/contact/">contact page</a
+        > with a source. Verified corrections are applied within 48 hours and logged in the
+        article.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: 2.5rem 2rem;
+  }
+  .about-title {
+    font-size: clamp(2rem, 4.6vw, 3.1rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    max-width: 22ch;
+    margin-top: 1rem;
+  }
+  .about-lede {
+    margin-top: 1rem;
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    max-width: 58ch;
+  }
+  .about .prose {
+    margin-top: 2rem;
+  }
+</style>

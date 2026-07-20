@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy policy · ToolVerdict"
+  description="What ToolVerdict collects, how advertising and analytics work on this site, and your choices."
+  path="/privacy-policy/"
+>
+  <section class="container policy">
+    <span class="mono-tag">Legal</span>
+    <h1 class="policy-title">Privacy policy</h1>
+    <p class="policy-meta">Last updated: July 20, 2026</p>
+
+    <div class="prose">
+      <p>
+        Short version: this is a static site. We don't run accounts, we don't ask for your name,
+        and we don't sell anything we know about you. The longer version is below.
+      </p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li>
+          <strong>Basic analytics</strong> — aggregate page views and referrers, used only to see
+          which reviews are useful. No individual profiles are built by us.
+        </li>
+        <li>
+          <strong>Advertising data</strong> — if ads are served on this site, our ad partners (such
+          as Google AdSense) may use cookies or similar technologies to serve ads based on prior
+          visits to this or other websites.
+        </li>
+      </ul>
+
+      <h2>Cookies &amp; advertising</h2>
+      <p>
+        Google's use of advertising cookies enables it and its partners to serve ads based on your
+        visit to this site and/or other sites on the Internet. You can opt out of personalized
+        advertising by visiting <a
+          href="https://www.google.com/settings/ads"
+          rel="noopener noreferrer nofollow">Google Ads Settings</a
+        >. Third-party vendors' cookies can be managed through your browser settings.
+      </p>
+
+      <h2>What we don't do</h2>
+      <ul>
+        <li>We don't operate user accounts or store personal data on our servers.</li>
+        <li>We don't sell or rent any visitor data to anyone.</li>
+        <li>We don't send newsletters unless you explicitly subscribe to one.</li>
+      </ul>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy: see the <a href="/contact/">contact page</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .policy {
+    padding-block: 2.5rem 2rem;
+  }
+  .policy-title {
+    font-size: clamp(2rem, 4.6vw, 3rem);
+    font-weight: 700;
+    margin-top: 1rem;
+  }
+  .policy-meta {
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+  .policy .prose {
+    margin-top: 2rem;
+  }
+</style>

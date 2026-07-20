@@ -1,0 +1,497 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import AdSlot from '../components/AdSlot.astro';
+
+const all = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const featured = all.find((a) => a.data.featured) ?? all[0];
+const rest = featured ? all.filter((a) => a !== featured) : [];
+const totalTools = all.reduce((n, a) => n + (a.data.toolsTested ?? 0), 0);
+const categories = [...new Set(all.map((a) => a.data.category))];
+
+const ticker = [
+  ...categories.map((c) => c.toUpperCase()),
+  'NO SPONSORED RANKINGS',
+  'WE BUY OUR OWN SUBSCRIPTIONS',
+  'EVERY SCORE ON THE RECORD',
+  'EST. 2026',
+];
+
+const site = Astro.site ?? new URL('https://toolverdict.dev/');
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'ToolVerdict',
+    url: site.href,
+  },
+];
+
+const method = [
+  {
+    n: '01',
+    title: 'Buy the subscription',
+    body: 'No vendor-provided review accounts. We pay the same price you would, on the same plan tiers, and note every upsell nudge along the way.',
+  },
+  {
+    n: '02',
+    title: 'Run the same brief',
+    body: 'Every tool in a comparison faces identical real-world tasks — the same prompts, the same documents, the same deadlines. No cherry-picked demos.',
+  },
+  {
+    n: '03',
+    title: 'Score, then argue',
+    body: 'Fixed criteria, weighted the same way in every review: output quality, speed, pricing honesty, and learning curve. Scores are debated before they are published.',
+  },
+  {
+    n: '04',
+    title: 'Publish the numbers',
+    body: 'The verdict box, the comparison table, and the score go live together — including the flaws. Updates get a dated changelog.',
+  },
+];
+---
+
+<BaseLayout
+  title="ToolVerdict — Independent SaaS & AI Tool Reviews"
+  description="We put SaaS and AI tools on trial with our own money, run identical real-world briefs, and publish every score. No sponsored rankings."
+  jsonLd={jsonLd}
+>
+  <!-- ============ masthead ============ -->
+  <section class="hero container">
+    <div class="hero-copy">
+      <span class="mono-tag hero-kicker">Independent SaaS &amp; AI tool reviews</span>
+      <h1 class="hero-title">
+        Every tool on trial. Every <em class="hl">verdict</em> on the record.
+      </h1>
+      <p class="hero-lede">
+        We spend our own money on subscriptions, run the same real-world briefs through every
+        product, and publish the numbers — including the ones that hurt.
+      </p>
+      <div class="hero-cta">
+        {
+          featured && (
+            <a class="btn" href={`/articles/${featured.id.replace(/\.mdx$/, '')}/`}>
+              Read the latest verdict
+            </a>
+          )
+        }
+        <a class="btn btn-ghost" href="/about/">How we score →</a>
+      </div>
+    </div>
+
+    <aside class="ledger" data-reveal aria-label="Site statistics">
+      <div class="ledger-head">
+        <span>The Ledger</span>
+        <span class="ledger-live"><span class="live-dot" aria-hidden="true"></span>Live</span>
+      </div>
+      <dl class="ledger-rows">
+        <div>
+          <dt>Reviews published</dt>
+          <dd>{all.length}</dd>
+        </div>
+        <div>
+          <dt>Tools put on trial</dt>
+          <dd>{totalTools}</dd>
+        </div>
+        <div>
+          <dt>Categories covered</dt>
+          <dd>{categories.length}</dd>
+        </div>
+        <div>
+          <dt>Sponsored rankings</dt>
+          <dd class="zero">0</dd>
+        </div>
+      </dl>
+      <p class="ledger-note">Every subscription is bought with our own money.</p>
+    </aside>
+  </section>
+
+  <!-- ============ ticker ============ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {
+        [0, 1].map(() => (
+          <div class="ticker-half">
+            {ticker.map((t) => (
+              <span class="tick">
+                <span class="tick-mark">✓</span>
+                {t}
+              </span>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- ============ latest verdict ============ -->
+  {
+    featured && (
+      <section class="section container">
+        <div class="section-head">
+          <span class="section-kicker">Latest verdict</span>
+          <a class="section-link" href="/articles/">
+            All reviews <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <ArticleCard article={featured} featured />
+      </section>
+    )
+  }
+
+  <!-- ============ archive grid ============ -->
+  {
+    rest.length > 0 && (
+      <section class="section container">
+        <div class="section-head">
+          <span class="section-kicker">From the archive</span>
+        </div>
+        <div class="card-grid">
+          {rest.map((a) => <ArticleCard article={a} />)}
+        </div>
+      </section>
+    )
+  }
+
+  <div class="container">
+    <AdSlot format="leaderboard" />
+  </div>
+
+  <!-- ============ methodology ============ -->
+  <section class="method">
+    <div class="container">
+      <span class="method-kicker">Methodology</span>
+      <h2 class="method-title">How a verdict is made</h2>
+      <div class="method-rows">
+        {
+          method.map((m) => (
+            <div class="method-row" data-reveal>
+              <span class="method-num">{m.n}</span>
+              <div class="method-body">
+                <h3>{m.title}</h3>
+                <p>{m.body}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ cta ============ -->
+  <section class="cta container">
+    <h2 class="cta-title">The archive is open.</h2>
+    <p class="cta-sub">Every comparison, every score, every flaw — on one page.</p>
+    <a class="btn" href="/articles/">Browse all reviews</a>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3.5rem);
+  }
+  .hero-kicker {
+    margin-bottom: 1.2rem;
+  }
+  .hero-title {
+    font-size: clamp(2.5rem, 5.6vw, 4.2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    max-width: 14ch;
+  }
+  .hl {
+    font-style: normal;
+    background: var(--green);
+    color: var(--paper);
+    padding: 0 0.14em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .hero-lede {
+    margin-top: 1.3rem;
+    font-size: 1.13rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    margin-top: 1.9rem;
+  }
+
+  /* ---------- ledger ---------- */
+  .ledger {
+    border: var(--border);
+    background: var(--card);
+    box-shadow: var(--shadow-hard);
+    transform: rotate(0.6deg);
+    transition: transform 0.2s ease;
+  }
+  .ledger:hover {
+    transform: rotate(0deg);
+  }
+  .ledger-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.6rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .ledger-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #6fc2b2;
+  }
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6fc2b2;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+  .ledger-rows {
+    margin: 0;
+    padding: 0.4rem 1.1rem;
+  }
+  .ledger-rows > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1.5px dashed rgba(26, 31, 29, 0.3);
+  }
+  .ledger-rows > div:last-child {
+    border-bottom: none;
+  }
+  .ledger-rows dt {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .ledger-rows dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .ledger-rows .zero {
+    color: var(--green);
+  }
+  .ledger-note {
+    padding: 0.7rem 1.1rem;
+    border-top: var(--border);
+    background: var(--green-tint);
+    font-size: 0.8rem;
+    color: var(--green-deep);
+  }
+
+  /* ---------- ticker ---------- */
+  .ticker {
+    border-block: var(--border);
+    background: var(--ink);
+    color: var(--paper);
+    overflow: hidden;
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
+  .ticker-half {
+    display: flex;
+    flex: none;
+    gap: 2.4rem;
+    padding: 0.6rem 2.4rem 0.6rem 0;
+  }
+  .tick {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+  }
+  .tick-mark {
+    color: #6fc2b2;
+  }
+  @keyframes ticker {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ---------- sections ---------- */
+  .section {
+    padding-block: clamp(2rem, 5vw, 3.2rem);
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    border-bottom: var(--border);
+    padding-bottom: 0.7rem;
+    margin-bottom: 1.6rem;
+  }
+  .section-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green-deep);
+  }
+  .section-link {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    transition: color 0.15s ease;
+  }
+  .section-link:hover {
+    color: var(--green-deep);
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.6rem;
+  }
+
+  /* ---------- methodology ---------- */
+  .method {
+    margin-top: 2.5rem;
+    border-block: var(--border);
+    background: var(--ink);
+    color: var(--paper);
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+  }
+  .method-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #6fc2b2;
+  }
+  .method-title {
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-top: 0.6rem;
+  }
+  .method-rows {
+    margin-top: 2.2rem;
+  }
+  .method-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 0.5rem;
+    border-top: 1.5px solid #3a4340;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .method-row:hover {
+    background: rgba(111, 194, 178, 0.06);
+    transform: translateX(6px);
+  }
+  .method-num {
+    font-family: var(--font-mono);
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: #6fc2b2;
+    line-height: 1;
+  }
+  .method-body h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .method-body p {
+    margin-top: 0.5rem;
+    color: #b9c2bd;
+    max-width: 62ch;
+    font-size: 0.97rem;
+  }
+
+  /* ---------- cta ---------- */
+  .cta {
+    padding-block: clamp(3rem, 7vw, 5rem);
+    text-align: left;
+  }
+  .cta-title {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .cta-sub {
+    margin-top: 0.7rem;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+  }
+  .cta .btn {
+    margin-top: 1.6rem;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 2.2rem;
+    }
+    .ledger {
+      max-width: 460px;
+    }
+  }
+  @media (max-width: 640px) {
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+    .method-row {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      animation: none;
+    }
+    .live-dot {
+      animation: none;
+    }
+  }
+</style>

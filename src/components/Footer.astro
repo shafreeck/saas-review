@@ -1,0 +1,122 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <span class="footer-word">Tool<em>Verdict</em></span>
+      <p>
+        Independent SaaS &amp; AI tool reviews. We test, we score, we publish the numbers —
+        no sponsored rankings.
+      </p>
+    </div>
+    <nav class="footer-col" aria-label="Explore">
+      <span class="footer-head">Explore</span>
+      <a href="/articles/">All reviews</a>
+      <a href="/about/">How we review</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <nav class="footer-col" aria-label="Legal">
+      <span class="footer-head">Legal</span>
+      <a href="/privacy-policy/">Privacy policy</a>
+    </nav>
+    <div class="footer-col">
+      <span class="footer-head">Disclosure</span>
+      <p class="footer-note">
+        Some outbound links may be affiliate links. This never affects scores — verdicts are
+        editorial decisions.
+      </p>
+    </div>
+  </div>
+  <div class="container footer-base">
+    <span>© {year} ToolVerdict. All verdicts final.</span>
+    <span class="footer-mono">BUILT WITH ASTRO · ZERO CLIENT JS BY DEFAULT</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 5rem;
+    border-top: var(--border);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.4fr;
+    gap: 2.5rem;
+    padding-block: 3rem;
+  }
+  .footer-word {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .footer-word em {
+    font-style: normal;
+    color: #6fc2b2;
+  }
+  .footer-brand p {
+    margin-top: 0.8rem;
+    color: #b9c2bd;
+    max-width: 34ch;
+    font-size: 0.95rem;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .footer-head {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #6fc2b2;
+    margin-bottom: 0.4rem;
+  }
+  .footer-col a {
+    color: var(--paper);
+    text-decoration: none;
+    width: fit-content;
+    background-image: linear-gradient(#6fc2b2, #6fc2b2);
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.2s ease;
+  }
+  .footer-col a:hover {
+    background-size: 100% 2px;
+  }
+  .footer-note {
+    color: #b9c2bd;
+    font-size: 0.85rem;
+  }
+  .footer-base {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-block: 1.1rem;
+    border-top: 1px solid #3a4340;
+    font-size: 0.85rem;
+    color: #b9c2bd;
+  }
+  .footer-mono {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
+  @media (max-width: 860px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

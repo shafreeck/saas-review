@@ -1,0 +1,129 @@
+---
+interface Props {
+  tool: string;
+  pros: string[];
+  cons: string[];
+}
+
+const { tool, pros, cons } = Astro.props;
+---
+
+<div class="proscons" data-reveal>
+  <h4 class="proscons-tool">{tool}</h4>
+  <div class="proscons-grid">
+    <div class="pane pros">
+      <span class="pane-head pros-head">Pros</span>
+      <ul>
+        {
+          pros.map((p) => (
+            <li>
+              <span class="mark pro-mark" aria-hidden="true">
+                +
+              </span>
+              {p}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="pane cons">
+      <span class="pane-head cons-head">Cons</span>
+      <ul>
+        {
+          cons.map((c) => (
+            <li>
+              <span class="mark con-mark" aria-hidden="true">
+                –
+              </span>
+              {c}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  .proscons {
+    margin: 2rem 0;
+    border: var(--border);
+    background: var(--card);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .proscons-tool {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding: 0.7rem 1.1rem;
+    border-bottom: var(--border);
+    background: var(--paper-2);
+  }
+  .proscons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .pane {
+    padding: 1rem 1.1rem 1.2rem;
+  }
+  .pane + .pane {
+    border-left: 1.5px solid rgba(26, 31, 29, 0.25);
+  }
+  .pane-head {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .pros-head {
+    color: var(--green-deep);
+  }
+  .cons-head {
+    color: var(--red);
+  }
+  .pane ul {
+    list-style: none;
+    margin: 0.7rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-size: 0.93rem;
+  }
+  .pane li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+  }
+  .mark {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    font-size: 0.85rem;
+    transform: translateY(2px);
+  }
+  .pro-mark {
+    background: var(--green-tint);
+    color: var(--green-deep);
+    border: 1.5px solid var(--green-deep);
+  }
+  .con-mark {
+    background: var(--red-tint);
+    color: var(--red);
+    border: 1.5px solid var(--red);
+  }
+  @media (max-width: 600px) {
+    .proscons-grid {
+      grid-template-columns: 1fr;
+    }
+    .pane + .pane {
+      border-left: none;
+      border-top: 1.5px solid rgba(26, 31, 29, 0.25);
+    }
+  }
+</style>

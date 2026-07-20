@@ -1,0 +1,127 @@
+---
+interface Props {
+  cols: string[];
+  rows: (string | number)[][];
+  highlightRow?: number;
+  caption?: string;
+}
+
+const { cols, rows, highlightRow = -1, caption } = Astro.props;
+---
+
+<figure class="cmp-wrap" data-reveal>
+  {
+    caption && (
+      <figcaption class="cmp-caption">
+        <span class="cmp-kicker">Comparison</span>
+        {caption}
+      </figcaption>
+    )
+  }
+  <div class="cmp-scroll">
+    <table class="cmp">
+      <thead>
+        <tr>
+          {cols.map((c) => <th scope="col">{c}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row, i) => (
+            <tr class:list={[{ winner: i === highlightRow }]}>
+              {row.map((cell, j) => (
+                <td class:list={[{ 'cell-first': j === 0 }]}>
+                  {j === 0 && i === highlightRow && <span class="verdict-flag">★ Verdict</span>}
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</figure>
+
+<style>
+  .cmp-wrap {
+    margin: 2.25rem 0;
+  }
+  .cmp-caption {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .cmp-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-right: 0.5rem;
+  }
+  .cmp-scroll {
+    overflow-x: auto;
+    border: var(--border);
+    background: var(--card);
+    box-shadow: var(--shadow-hard);
+  }
+  .cmp {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 560px;
+    font-size: 0.93rem;
+  }
+  .cmp th {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: var(--ink);
+    color: var(--paper);
+    border-right: 1px solid #3a4340;
+  }
+  .cmp td {
+    padding: 0.7rem 1rem;
+    border-top: 1.5px solid rgba(26, 31, 29, 0.25);
+    border-right: 1.5px solid rgba(26, 31, 29, 0.12);
+    vertical-align: top;
+  }
+  .cmp .cell-first {
+    font-weight: 600;
+    font-family: var(--font-display);
+    white-space: nowrap;
+  }
+  .cmp tbody tr {
+    transition: background 0.12s ease;
+  }
+  .cmp tbody tr:hover {
+    background: var(--paper-2);
+  }
+  .cmp tr.winner {
+    background: var(--green-tint);
+  }
+  .cmp tr.winner:hover {
+    background: #d3e3dc;
+  }
+  .cmp tr.winner .cell-first {
+    color: var(--green-deep);
+  }
+  .verdict-flag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--green);
+    color: var(--paper);
+    padding: 0.15rem 0.45rem;
+    margin-right: 0.55rem;
+    transform: translateY(-1px);
+  }
+</style>

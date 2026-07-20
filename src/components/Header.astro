@@ -1,0 +1,123 @@
+---
+const links = [
+  { href: '/', text: 'Home' },
+  { href: '/articles/', text: 'Reviews' },
+  { href: '/about/', text: 'About' },
+  { href: '/contact/', text: 'Contact' },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">✓</span>
+      <span class="brand-word">Tool<em>Verdict</em></span>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation">
+      {
+        links.map((l) => (
+          <a href={l.href} class:list={[{ active: isActive(l.href) }]}>
+            {l.text}
+          </a>
+        ))
+      }
+    </nav>
+    <span class="header-tag">EST. 2026 · INDEPENDENT</span>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: var(--border);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 0.8rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+  }
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    background: var(--green);
+    color: var(--paper);
+    font-weight: 700;
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 0.2s ease;
+  }
+  .brand:hover .brand-mark {
+    transform: rotate(-8deg) scale(1.06);
+  }
+  .brand-word {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+  }
+  .brand-word em {
+    font-style: normal;
+    color: var(--green);
+  }
+  .site-nav {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: auto;
+    overflow-x: auto;
+  }
+  .site-nav a {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.45rem 0.75rem;
+    border: 2px solid transparent;
+    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .site-nav a:hover {
+    border-color: var(--ink);
+    background: var(--card);
+  }
+  .site-nav a.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .header-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  @media (max-width: 720px) {
+    .header-tag {
+      display: none;
+    }
+    .header-inner {
+      flex-wrap: wrap;
+      gap: 0.6rem 1rem;
+    }
+    .site-nav {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,172 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const all = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+---
+
+<BaseLayout
+  title="All reviews · ToolVerdict"
+  description="The complete ToolVerdict archive: every SaaS and AI tool comparison, verdict score, and published flaw."
+  path="/articles/"
+>
+  <section class="container archive">
+    <span class="mono-tag">The archive</span>
+    <h1 class="archive-title">All reviews</h1>
+    <p class="archive-count">
+      <strong>{all.length}</strong> published verdict{all.length === 1 ? '' : 's'} · sorted newest
+      first
+    </p>
+
+    <div class="rows">
+      {
+        all.map((a) => {
+          const slug = a.id.replace(/\.mdx$/, '');
+          const { title, description, category, pubDate, verdict } = a.data;
+          return (
+            <a class="row" href={`/articles/${slug}/`} data-reveal>
+              <time class="row-date" datetime={pubDate.toISOString()}>
+                {fmt(pubDate)}
+              </time>
+              <div class="row-main">
+                <h2 class="row-title">{title}</h2>
+                <p class="row-desc">{description}</p>
+              </div>
+              <span class="row-cat">{category}</span>
+              <span class="row-score" title={`Verdict score: ${verdict.score}/10`}>
+                {verdict.score.toFixed(1)}
+              </span>
+              <span class="row-arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+          );
+        })
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .archive {
+    padding-block: 2.5rem 2rem;
+  }
+  .archive-title {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    margin-top: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .archive-count {
+    margin-top: 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+  .archive-count strong {
+    color: var(--green-deep);
+    font-size: 1rem;
+  }
+  .rows {
+    margin-top: 2.2rem;
+    border-top: var(--border);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 100px 1fr 130px 64px 36px;
+    gap: 1.2rem;
+    align-items: center;
+    padding: 1.25rem 0.6rem;
+    border-bottom: 1.5px solid rgba(26, 31, 29, 0.3);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.14s ease, transform 0.14s ease;
+  }
+  .row:hover {
+    background: var(--card);
+    transform: translateX(4px);
+  }
+  .row-date {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+  .row-title {
+    font-size: 1.22rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    transition: color 0.14s ease;
+  }
+  .row:hover .row-title {
+    color: var(--green-deep);
+  }
+  .row-desc {
+    margin-top: 0.25rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .row-cat {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-deep);
+    border: 1.5px solid var(--green-deep);
+    padding: 0.18rem 0.5rem;
+    justify-self: start;
+    white-space: nowrap;
+  }
+  .row-score {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1.05rem;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.15rem 0.5rem;
+    text-align: center;
+  }
+  .row-arrow {
+    font-size: 1.2rem;
+    transition: transform 0.16s ease;
+  }
+  .row:hover .row-arrow {
+    transform: translateX(5px);
+  }
+  @media (max-width: 760px) {
+    .row {
+      grid-template-columns: 1fr 64px 28px;
+      grid-template-areas:
+        'main score arrow'
+        'date score arrow';
+      row-gap: 0.4rem;
+    }
+    .row-main {
+      grid-area: main;
+    }
+    .row-date {
+      grid-area: date;
+    }
+    .row-score {
+      grid-area: score;
+      align-self: center;
+    }
+    .row-arrow {
+      grid-area: arrow;
+    }
+    .row-cat {
+      display: none;
+    }
+  }
+</style>

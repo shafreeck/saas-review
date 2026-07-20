@@ -1,0 +1,111 @@
+---
+interface Props {
+  score: number;
+  winner: string;
+  label?: string;
+}
+
+const { score, winner, label = 'Best overall' } = Astro.props;
+const clamped = Math.min(10, Math.max(0, score));
+const pct = Math.round(clamped * 10);
+---
+
+<aside class="verdict" data-reveal aria-label="Verdict">
+  <div class="verdict-rail">
+    <span class="verdict-kicker">The Verdict</span>
+    <div class="verdict-score">
+      <span class="score-num">{clamped.toFixed(1)}</span>
+      <span class="score-max">/10</span>
+    </div>
+  </div>
+  <div class="verdict-main">
+    <span class="verdict-label">{label}</span>
+    <p class="verdict-winner">{winner}</p>
+    <div class="score-meter" role="img" aria-label={`Score ${clamped.toFixed(1)} out of 10`}>
+      <span style={`--score: ${pct}%`}></span>
+    </div>
+    <div class="verdict-summary"><slot /></div>
+  </div>
+</aside>
+
+<style>
+  .verdict {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    border: var(--border);
+    background: var(--card);
+    box-shadow: var(--shadow-hard);
+    margin: 2.25rem 0;
+  }
+  .verdict-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 1.5rem 1rem;
+    background: var(--green);
+    color: var(--paper);
+    border-right: var(--border);
+  }
+  .verdict-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .verdict-score {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+  }
+  .score-num {
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .score-max {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    opacity: 0.75;
+  }
+  .verdict-main {
+    padding: 1.4rem 1.6rem;
+  }
+  .verdict-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green-deep);
+  }
+  .verdict-winner {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0.35rem 0 0.9rem;
+  }
+  .verdict-summary {
+    margin-top: 0.9rem;
+    font-size: 0.97rem;
+    color: var(--ink-soft);
+  }
+  .verdict-summary :global(p) {
+    margin: 0;
+  }
+  @media (max-width: 640px) {
+    .verdict {
+      grid-template-columns: 1fr;
+    }
+    .verdict-rail {
+      flex-direction: row;
+      border-right: none;
+      border-bottom: var(--border);
+      padding: 0.9rem 1rem;
+    }
+  }
+</style>
