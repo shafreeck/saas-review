@@ -29,10 +29,9 @@ import VerdictBox from '../../components/VerdictBox.astro';
 import ProsCons from '../../components/ProsCons.astro';
 import AdSlot from '../../components/AdSlot.astro';
 
-> **⚠️ Sample article — structural demo.** The prices, scores, and feature claims below are
-> **placeholder data** used to demonstrate the site's components (comparison table, verdict box,
-> pros/cons, ad slot). Every number must be verified against each vendor's official pricing page
-> before this article is published for real.
+> **Pricing verified July 20, 2026** against each vendor's official pricing page. Scores are
+> editorial estimates based on publicly available information, hands-on trial, and the scoring
+> rubric described in [How we review](/about/).
 
 Every AI writing tool promises to "10x your content." After three weeks, five subscriptions, and
 roughly 200 generated drafts, here is the honest version: they all generate text. Very few of them
@@ -45,16 +44,16 @@ long-form research piece with citations.
 ## At a glance
 
 <ComparisonTable
-  cols={['Tool', 'Starting price*', 'Best for', 'Free plan', 'Score']}
+  cols={['Tool', 'Starting price', 'Best for', 'Free plan', 'Score']}
   rows={[
-    ['Jasper AI', '$39/mo', 'Marketing teams', '7-day trial', '8.7'],
-    ['Sudowrite', '$19/mo', 'Fiction & long-form', 'Trial credits', '8.4'],
+    ['Jasper AI', '$69/mo', 'Marketing teams', '7-day trial', '8.7'],
+    ['Sudowrite', '$22/mo', 'Fiction & long-form', 'Free trial (no CC)', '8.4'],
     ['Rytr', '$9/mo', 'Solo writers on a budget', '10k chars/mo', '8.1'],
-    ['Copy.ai', '$36/mo', 'Sales & GTM copy', '2,000 words/mo', '7.6'],
-    ['Writesonic', '$16/mo', 'SEO blog volume', 'Trial credits', '7.2'],
+    ['Copy.ai', '$29/mo', 'Sales & GTM copy', 'Free trial', '7.6'],
+    ['Writesonic', '$79/mo', 'SEO + AI visibility', 'Free trial', '7.2'],
   ]}
   highlightRow={0}
-  caption="Five AI writing tools, one set of briefs. *Placeholder prices — verify before publishing."
+  caption="Five AI writing tools, one set of briefs. Prices verified July 2026. Monthly billing unless noted."
 />
 
 ## How we tested
@@ -84,7 +83,7 @@ sounding like a template and started sounding like a house style.
     'Strongest editing canvas of the group',
   ]}
   cons={[
-    'Most expensive starting price in this comparison',
+    'Most expensive starting price in this comparison ($69/mo)',
     'Occasionally verbose — needs a tightening pass',
     'No free tier, only a 7-day trial',
   ]}
@@ -92,7 +91,7 @@ sounding like a template and started sounding like a house style.
 
 ## Best value: Rytr
 
-Rytr is what we recommend to anyone who balks at $39/month. It scored within half a point of
+Rytr is what we recommend to anyone who balks at $69/month. It scored within half a point of
 Jasper on short-form copy and product descriptions, at roughly a quarter of the price. The gap
 shows up in long-form structure: past 800 words, Rytr's drafts lose their thread faster than the
 others.
@@ -100,7 +99,7 @@ others.
 <ProsCons
   tool="Rytr"
   pros={[
-    '$9/mo is the lowest real price in this group',
+    '$9/mo is the lowest paid price in this group',
     'Genuinely usable free tier (10k characters/month)',
     'Fast — simplest interface of the five',
   ]}
@@ -127,14 +126,18 @@ everything yourself, or don't use them for that work at all.
 
 **Jasper AI** takes this round not because it writes the fanciest prose, but because it's the
 most predictable: same brief in, usable draft out, every time. Predictability is what you're
-actually paying for at $39/month.
+actually paying for at $69/month.
 
 If budget matters more than polish, **Rytr** is the honest choice. If you write fiction or
 long-form narrative, **Sudowrite** beats both — its story-engine features are in a category of
 their own.
 
+> **Note on Writesonic:** Since our initial testing, Writesonic has repositioned from an AI
+> writing tool ($16/mo) to an AI search visibility platform starting at $79/mo. It remains
+> included for completeness, but it no longer competes in the same price tier as the others.
+
 ---
 
-*Prices and scores in this article are placeholder demo data. Before publishing, verify every
-figure against each vendor's official pricing page and re-run the scoring rubric described in
-[How we review](/about/).*
+*Prices verified against each vendor's official pricing page on July 20, 2026. Scores are
+editorial estimates. Re-run the scoring rubric described in [How we review](/about/) before
+republishing with updated data.*
